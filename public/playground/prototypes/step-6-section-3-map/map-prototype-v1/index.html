@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-TW">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -8,23 +8,24 @@
     />
     <title>Kumamoto Investment Opportunities</title>
 
-    <!-- Google Fonts: REM + Noto Sans JP + Noto Sans TC -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Rem:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- The MoreHarvest M mark in the browser tab (brand.md 5). The artwork was
+         decided and saved but never linked, so the tab fell back to the
+         browser's blank-page icon. Vite fingerprints and bundles it, so it
+         ships inside the snapshot and needs no network. -->
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon-CV9UEKej.svg" />
 
-    <!-- Mapbox GL JS CSS -->
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css"
-      rel="stylesheet"
-    />
+    <!-- Both fonts (Rem and Noto Sans JP) are self-hosted and declared in
+         css/styles.css, so the page requests nothing from a third party. -->
 
-    <!-- App CSS -->
-    <script type="module" crossorigin src="./assets/index-BqnSnyI_.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DzroTMbZ.css">
+    <!-- App CSS. Mapbox GL JS's own stylesheet is imported by js/main.js so it
+         is bundled rather than fetched from api.mapbox.com. -->
+
+    <!-- Mapbox GL JS and Chart.js are bundled into the app module, not loaded
+         from a CDN. Two CDN script tags used to sit here: they made the app
+         unable to boot with no network, which the embedded snapshot inside
+         value-add-prototype depends on (process.md 2.2). See js/main.js. -->
+    <script type="module" crossorigin src="./assets/index-BdIMczFv.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-C5_PoIp9.css">
   </head>
   <body>
     <!-- Embed-mode behavior (data-embed / data-embed-host / data-chromeless
@@ -37,10 +38,6 @@
 
     <style>
       /* Dev tools are always hidden in any embed mode. */
-      [data-embed="1"] #camera-debug-toggle,
-      [data-embed="1"] #camera-debug,
-      [data-embed="1"] #qa-toggle,
-      [data-embed="1"] #qa-panel,
       [data-embed="1"] #camera-explorer-toggle,
       [data-embed="1"] #camera-explorer,
       [data-embed="1"] #step-jumper-toggle,
@@ -63,10 +60,6 @@
          so the local presenter can clear the screen without leaving the
          browser. Handler is gated by import.meta.env.DEV in main.js, so this
          attribute is only ever set in development. */
-      [data-dev-hidden="1"] #camera-debug-toggle,
-      [data-dev-hidden="1"] #camera-debug,
-      [data-dev-hidden="1"] #qa-toggle,
-      [data-dev-hidden="1"] #qa-panel,
       [data-dev-hidden="1"] #camera-explorer-toggle,
       [data-dev-hidden="1"] #camera-explorer,
       [data-dev-hidden="1"] #step-jumper-toggle,
@@ -95,9 +88,8 @@
         padding: 6px;
         margin: 0 auto;
         box-sizing: border-box;
-        background: #1A1A1E;
+        background: #1e1f20;
         border-radius: 44px;
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
         overflow: hidden;
         position: relative;
         transform: translate(0, 0);
@@ -133,7 +125,7 @@
 
       /* ───── value-add-prototype embed host overrides ─────
          Activated by ?embed=1&host=valueadd. Overrides the iPhone phone
-         frame above and lets the iframe fill its container — the slideshow
+         frame above and lets the iframe fill its container, the slideshow
          draws its own iPad frame around the iframe. */
       [data-embed-host="valueadd"] {
         background: #F9F9F9;
@@ -178,11 +170,20 @@
       }
     </style>
 
-    <!-- Skip Link for keyboard users -->
-    <a href="#map-container" class="skip-link">Skip to main content</a>
-
-    <!-- Start screen removed - map loads directly -->
-    <div id="start-screen" style="display: none"></div>
+    <!-- Intro screen. Shown on the standalone app only: the embedded map in
+         value-add-prototype opens on a step and never sees it. -->
+    <div id="start-screen" hidden role="dialog" aria-label="Welcome">
+      <div class="start-screen-inner">
+        <img class="start-screen-logo" src="data:image/svg+xml,%3csvg%20width='56'%20height='24'%20viewBox='0%200%2056%2024'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M11.4499%200.0119694C15.6113%20-0.0472805%2018.8225%201.72909%2021.2495%205.09096C24.5588%209.67532%2027.9048%2014.2327%2031.2296%2018.8058C32.4795%2020.5248%2032.5275%2021.4623%2031.4681%2022.8832C30.431%2024.2744%2028.131%2024.409%2027.0638%2023.0429C25.3525%2020.8525%2023.7371%2018.5861%2022.0689%2016.3612C19.9435%2013.5269%2017.8404%2010.6743%2015.6611%207.88283C14.2228%206.04046%2012.2237%205.62871%2010.0574%206.14771C8.0471%206.62921%206.79123%207.98483%206.03273%209.92507C5.13493%2012.2227%206.2764%2015.1016%208.03892%2016.4186C10.0269%2017.9039%2012.7964%2017.9332%2014.8814%2016.4992C15.9014%2015.7976%2016.5373%2014.7911%2016.9745%2013.6657C17.2078%2013.0653%2017.3827%2012.9502%2017.7846%2013.5153C18.6887%2014.7862%2019.5828%2016.0661%2020.5326%2017.3017C21.0003%2017.9103%2021.0081%2018.4106%2020.5542%2019.0181C18.1052%2022.2963%2014.8907%2023.9403%2010.7865%2023.7367C4.09413%2023.4037%20-0.687161%2017.2882%200.0809956%2010.2449C0.601025%205.47683%204.73117%201.07584%208.72833%200.275594C9.62613%200.0959692%2010.5295%20-0.0424055%2011.4499%200.0119694V0.0119694Z'%20fill='url(%23paint0_linear_1_181)'/%3e%3cpath%20d='M38.6392%2010.6906C37.536%209.15947%2036.4132%207.61222%2035.3059%206.05372C35.1116%205.78035%2035.3036%205.52947%2035.4622%205.29923C37.4294%202.44923%2040.0638%200.693108%2043.5472%200.412984C48.5926%200.00685967%2052.3175%202.17098%2054.645%206.60572C57.5427%2012.1272%2055.6505%2019.0474%2050.3146%2022.3118C45.3844%2025.3279%2038.5382%2023.9134%2034.9136%2018.7992C31.6426%2014.1841%2028.281%209.63422%2024.9699%205.0476C23.7738%203.39085%2023.7233%202.53998%2024.6742%201.21773C25.6582%20-0.15064%2028.0515%20-0.25039%2029.0618%201.09736C32.1433%205.20735%2035.187%209.34584%2038.2496%2013.4705C38.8513%2014.2808%2039.4583%2015.0875%2040.082%2015.8802C42.2%2018.5731%2045.8651%2018.9582%2048.3185%2016.7543C51.0208%2014.327%2051.2043%2010.5335%2048.7404%208.0431C45.6819%204.95198%2040.6306%206.01285%2039.0374%2010.0778C38.9631%2010.2676%2038.9981%2010.5185%2038.6392%2010.691V10.6906Z'%20fill='url(%23paint1_linear_1_181)'/%3e%3cdefs%3e%3clinearGradient%20id='paint0_linear_1_181'%20x1='32.2182'%20y1='-2.02546e-06'%20x2='-2.35867'%20y2='4.09781'%20gradientUnits='userSpaceOnUse'%3e%3cstop%20stop-color='%23FBB931'/%3e%3cstop%20offset='1'%20stop-color='%23FF8660'/%3e%3c/linearGradient%3e%3clinearGradient%20id='paint1_linear_1_181'%20x1='55.9996'%20y1='0.137327'%20x2='21.6733'%20y2='4.21983'%20gradientUnits='userSpaceOnUse'%3e%3cstop%20stop-color='%23FBB931'/%3e%3cstop%20offset='1'%20stop-color='%23FF8660'/%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e" alt="MoreHarvest" />
+        <h1 class="start-screen-title">Welcome to MoreHarvest</h1>
+        <p class="start-screen-subtitle">
+          Nine investment properties in Kumamoto, Japan, beside TSMC's new fab.
+        </p>
+        <button id="start-btn" class="start-screen-cta" type="button">
+          Start The Tour
+        </button>
+      </div>
+    </div>
 
     <!-- Main App Container -->
     <div id="app-container">
@@ -191,7 +192,7 @@
         <div
           id="map"
           role="application"
-          aria-label="熊本投資區域互動地圖"
+          aria-label="Kumamoto investment area map"
         ></div>
         <!-- Screen reader announcements for map interactions -->
         <div
@@ -207,7 +208,7 @@
           class="hidden"
           role="progressbar"
           aria-valuemin="1"
-          aria-label="旅程進度"
+          aria-label="Journey progress"
         ></nav>
 
         <!-- Time Toggle -->
@@ -215,7 +216,7 @@
           id="time-toggle"
           class="hidden"
           role="radiogroup"
-          aria-label="地圖時間檢視"
+          aria-label="Map time view"
         >
           <button
             id="present-btn"
@@ -245,11 +246,48 @@
           </button>
         </div>
 
-        
+        <!-- The layers control ships (owner ruling, 2026-07-27). It is shown to
+             the user only in Q&A mode, step 11, per layout.md 8; showDataLayers()
+             decides that, not the build. Both elements sat inside DEV-ONLY
+             markers until now, so production had no layer controls on any step
+             and step 11 silently lost a documented feature. -->
+        <!-- Layers Toggle Button (hidden until journey starts) -->
+        <button
+          id="layers-toggle"
+          class="hidden"
+          aria-label="Toggle map layers"
+          aria-expanded="false"
+        >
+          <svg
+            aria-hidden="true"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </button>
 
-        
 
-        
+        <!-- Data Layers Panel (journey-aware, toggled by button) -->
+        <div
+          id="data-layers"
+          class="hidden"
+          role="region"
+          aria-label="Data layers"
+        >
+          <div class="layers-title">Data layers</div>
+          <div class="layer-items" id="data-layer-items">
+            <!-- Populated by JS - includes both map layers and data layers -->
+          </div>
+        </div>
 
         
 
@@ -259,7 +297,7 @@
         <button
           id="panel-toggle"
           class="hidden"
-          aria-label="切換儀表板"
+          aria-label="Toggle dashboard"
           aria-expanded="false"
         >
           <svg
@@ -286,10 +324,10 @@
         id="right-panel"
         class="hidden"
         role="complementary"
-        aria-label="儀表板"
+        aria-label="Dashboard"
       >
         <div class="panel-toolbar">
-          <button id="panel-home" class="hidden" aria-label="回到儀表板首頁">
+          <button id="panel-home" class="hidden" aria-label="Back to dashboard home">
             <svg
               aria-hidden="true"
               width="24"
@@ -305,7 +343,7 @@
               <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
           </button>
-          <button id="panel-close" aria-label="關閉儀表板">
+          <button id="panel-close" aria-label="Close dashboard">
             <svg
               aria-hidden="true"
               width="24"
@@ -336,7 +374,7 @@
     >
       <div id="gallery-overlay"></div>
       <div id="gallery-content">
-        <button id="gallery-close" aria-label="關閉圖庫">
+        <button id="gallery-close" aria-label="Close gallery">
           <svg
             aria-hidden="true"
             width="20"
@@ -352,7 +390,7 @@
             <line x1="2" y1="2" x2="14" y2="14"></line>
           </svg>
         </button>
-        <h2 id="gallery-title" class="sr-only">文件檢視器</h2>
+        <h2 id="gallery-title" class="sr-only">Document viewer</h2>
         <div id="gallery-body"></div>
       </div>
     </div>
@@ -363,7 +401,7 @@
       class="hidden"
       role="dialog"
       aria-modal="true"
-      aria-label="物件圖片放大檢視"
+      aria-label="Property image viewer"
     >
       <div
         id="quick-look-overlay"
@@ -372,7 +410,7 @@
       <div id="quick-look-content">
         <button
           id="quick-look-close"
-          aria-label="關閉圖片"
+          aria-label="Close image"
           onclick="UI.hidePropertyImageQuickLook()"
         >
           <svg
@@ -400,7 +438,7 @@
       class="hidden"
       role="dialog"
       aria-modal="true"
-      aria-label="佐證資料預覽"
+      aria-label="Evidence preview"
     >
       <div
         id="evidence-preview-overlay"
@@ -409,7 +447,7 @@
       <div id="evidence-preview-content">
         <button
           id="evidence-preview-close"
-          aria-label="關閉預覽"
+          aria-label="Close preview"
           onclick="UI.hideEvidencePreview()"
         >
           <svg
@@ -432,83 +470,13 @@
     </div>
 
 
-    <!-- Chart.js for data visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-    <!-- Mapbox GL JS. Token resolution (parent-window injection, URL param,
-         bundled fallback) now lives in `js/map-core/options.js` and is
-         applied by `mountMap` via `window.MAPBOX_ACCESS_TOKEN` before
+    <!-- Mapbox token resolution (parent-window injection, URL param, bundled
+         fallback) lives in `js/map-core/options.js` and is applied by
+         `mountMap` via `window.MAPBOX_ACCESS_TOKEN` before
          `MapController.init()` runs. -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
 
-    <!-- Language toggle (top-right) -->
-    <button id="lang-toggle" aria-label="切換語言">EN</button>
-    <script>
-      (function () {
-        const btn = document.getElementById("lang-toggle");
-        // Optional ?lang= query-param overrides localStorage. Used by embeds
-        // that need a deterministic language regardless of prior visits.
-        const urlLang = new URLSearchParams(location.search).get("lang");
-        if (urlLang === "en" || urlLang === "zh-TW") {
-          localStorage.setItem("app-lang", urlLang);
-        }
-        const current = localStorage.getItem("app-lang") || "en";
-        document.documentElement.lang = current;
-        btn.textContent = current === "zh-TW" ? "EN" : "中文";
-        btn.addEventListener("click", function () {
-          const next = current === "zh-TW" ? "en" : "zh-TW";
-          localStorage.setItem("app-lang", next);
-          location.reload();
-        });
-      })();
-    </script>
+    <!-- Language toggle removed: the app is English only. -->
 
-    <!-- Rotate-to-landscape overlay (touch devices in portrait).
-         The app is designed for landscape; this overlay covers the
-         broken portrait layout until the user rotates the iPad. -->
-    <div id="rotate-overlay" aria-hidden="true">
-      <div class="rotate-overlay-inner">
-        <svg
-          class="rotate-overlay-icon"
-          width="96"
-          height="96"
-          viewBox="0 0 96 96"
-          fill="none"
-          aria-hidden="true"
-        >
-          <rect
-            x="30"
-            y="10"
-            width="36"
-            height="54"
-            rx="5"
-            stroke="currentColor"
-            stroke-width="3"
-            fill="none"
-          />
-          <circle cx="48" cy="58" r="1.6" fill="currentColor" />
-          <path
-            d="M16 66 Q16 84 34 84 L62 84 Q80 84 80 66"
-            stroke="currentColor"
-            stroke-width="3"
-            fill="none"
-            stroke-linecap="round"
-          />
-          <path
-            d="M74 70 L80 64 L86 70"
-            stroke="currentColor"
-            stroke-width="3"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        <h2 class="rotate-overlay-title">Rotate to Landscape</h2>
-        <p class="rotate-overlay-body">
-          This experience is designed for landscape orientation.
-        </p>
-      </div>
-    </div>
 
     <!-- App JS (ES modules) -->
   </body>
